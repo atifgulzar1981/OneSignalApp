@@ -1,0 +1,31 @@
+# Solution-specific files
+*.suo
+*.user
+.vs/
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+[Bb]in/
+[Oo]bj/
+
+*.log
+
+# ReSharper is a .NET coding add-in
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# Publish Web Output
+*.[Pp]ublish.xml
+*.azurePubxml
+*.pubxml
+*.publishproj
+
+appsettings.Development.json
+**/node_modules
+**/logs
+*/wwwroot/media/*
+*/wwwroot/lib/*
+deploy/*
+*/.local-chromium/*
