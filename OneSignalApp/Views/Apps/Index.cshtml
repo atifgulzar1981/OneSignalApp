@@ -1,4 +1,46 @@
-﻿@{
+﻿@model AppsViewModel
+@{
   ViewData["Title"] = "One Signal Apps";
 }
-<h3>here we'll show one signal apps...</h3>
+<h3>My Apps</h3>
+@if (Model.Apps.Count == 0)
+{
+  <h5>No apps available.</h5>
+}
+else
+{
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Id</th>
+      <th>Name</th>
+      <th>Created At</th>
+      @if (Model.LoggedInUser.UserType == UserType.Admin)
+      {
+        <th>&nbsp;</th>
+        <th>&nbsp;</th>
+      }
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var app in Model.Apps)
+    {
+      <tr>
+        <td>@app.id</td>
+        <td>@app.name</td>
+        <td>@app.created_at.ToShortDateString()</td>
+        @if (Model.LoggedInUser.UserType == UserType.Admin)
+        {
+          <td>
+            <a class="btn btn-link" asp-controller="Apps" asp-action="Edit" asp-route-id="@app.id">Edit</a>
+          </td>
+          <td>
+            Delete Not Available
+            @*<a href="#" class="btn btn-link delete-btn" data-app-id="@app.id">Delete</a>*@
+          </td>
+        }
+      </tr>
+    }
+    </tbody>
+  </table>
+}
