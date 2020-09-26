@@ -1,4 +1,5 @@
 ﻿using System;
+using FluentValidation;
 
 namespace OneSignalApp.Models
 {
@@ -28,5 +29,15 @@ namespace OneSignalApp.Models
     public string safari_icon_256_256 { get; set; }
     public string site_name { get; set; }
     public string basic_auth_key { get; set; }
+  }
+
+  public class AppValidator : AbstractValidator<App>
+  {
+    public AppValidator()
+    {
+      RuleFor(x => x.name)
+        .NotEmpty()
+        .Length(2, 150);
+    }
   }
 }

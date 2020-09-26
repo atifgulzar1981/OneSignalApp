@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace OneSignalApp.Controllers
 {
-  [Authorize]
   public abstract class BaseController : Controller
   {
     protected void FlashSuccess(string message)

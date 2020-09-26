@@ -15,5 +15,5 @@
 </div>
 
 <form asp-controller="Apps" asp-action="Create" method="post">
-  @Html.Partial("_Form")
+  @await Html.PartialAsync("_Form")
 </form>

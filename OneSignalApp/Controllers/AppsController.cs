@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using OneSignalApp.Models;
@@ -12,8 +13,10 @@ using OneSignalApp.ViewModels;
 
 namespace OneSignalApp.Controllers
 {
+  [Authorize]
   public class AppsController : BaseController
   {
+    // ReSharper disable once InconsistentNaming
     private readonly IUserService userService;
 
     public AppsController(IUserService userService)
@@ -59,6 +62,12 @@ namespace OneSignalApp.Controllers
     [HttpPost]
     public async Task<IActionResult> Create(App app)
     {
+      if (!ModelState.IsValid)
+      {
+        FlashError("Please fill all the fields");
+        return View(app);
+      }
+
       var newApp = new App
       {
         name = app.name,
@@ -121,6 +130,12 @@ namespace OneSignalApp.Controllers
     [HttpPost]
     public async Task<IActionResult> Edit(string id, App app)
     {
+      if (!ModelState.IsValid)
+      {
+        FlashError("Please fill all the fields");
+        return View(app);
+      }
+
       var httpWebRequest = (HttpWebRequest) WebRequest.Create($"{AppConstants.ONE_SIGNAL_APPS_API}/{id}");
       httpWebRequest.Headers.Add("Authorization", $"Basic {AppConstants.ONE_SIGNAL_AUTH_KEY}");
       httpWebRequest.ContentType = "application/json";

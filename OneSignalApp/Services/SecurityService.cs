@@ -15,7 +15,7 @@ namespace OneSignalApp.Services
 
     public User ValidateCredentials(string userName, string password)
     {
-      var user = dbContext.Users.SingleOrDefault(x => x.Email == userName);
+      var user = dbContext.Users.FirstOrDefault(x => x.Email == userName);
 
       if (user != null && BCrypt.Net.BCrypt.Verify(password, user.Password))
         return user;

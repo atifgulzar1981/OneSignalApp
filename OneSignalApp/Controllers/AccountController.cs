@@ -8,7 +8,7 @@ using OneSignalApp.ViewModels;
 
 namespace OneSignalApp.Controllers
 {
-  public class AccountController : Controller
+  public class AccountController : BaseController
   {
     public readonly ISecurityService securityService;
     public readonly IUserRepository userRepository;
@@ -27,7 +27,21 @@ namespace OneSignalApp.Controllers
     [HttpPost]
     public IActionResult Register(User user)
     {
-      userRepository.RegisterUser(user);
+      if (ModelState.IsValid)
+      {
+        var existingUser = userRepository.GetUserByEmail(user.Email);
+        if (existingUser != null)
+        {
+          FlashError("This email is already in use.");
+          return View(user);
+        }
+
+        userRepository.RegisterUser(user);
+        FlashSuccess("User Registered Successfully.");
+        return RedirectToAction("Login");
+      }
+
+      FlashError("Please fill all the fields");
 
       return View(user);
     }
@@ -51,10 +65,7 @@ namespace OneSignalApp.Controllers
     [HttpPost]
     public async Task<IActionResult> LogOut()
     {
-      foreach (string cookiesKey in Request.Cookies.Keys)
-      {
-        Response.Cookies.Delete(cookiesKey);
-      }
+      foreach (var cookiesKey in Request.Cookies.Keys) Response.Cookies.Delete(cookiesKey);
       await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
       return RedirectToAction("Login");
     }

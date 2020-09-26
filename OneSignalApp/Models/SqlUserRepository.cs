@@ -19,7 +19,7 @@ namespace OneSignalApp.Models
 
     public User GetUserByEmail(string email)
     {
-      return dbContext.Users.SingleOrDefault(x => x.Email == email);
+      return dbContext.Users.FirstOrDefault(x => x.Email == email);
     }
 
     public User RegisterUser(User user)

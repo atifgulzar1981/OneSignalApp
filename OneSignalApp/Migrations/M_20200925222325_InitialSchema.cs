@@ -10,7 +10,7 @@ namespace OneSignalApp.Migrations
       Create.Table("Users")
         .WithColumn("Id").AsInt32().PrimaryKey().Identity()
         .WithColumn("FullName").AsString(150).NotNullable()
-        .WithColumn("Email").AsString(150).NotNullable()
+        .WithColumn("Email").AsString(254).NotNullable().Unique("IX_Email")
         .WithColumn("Password").AsString(150).NotNullable()
         .WithColumn("UserType").AsInt32().NotNullable()
         ;
