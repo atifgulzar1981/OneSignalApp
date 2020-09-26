@@ -26,6 +26,5 @@ appsettings.Development.json
 **/node_modules
 **/logs
 */wwwroot/media/*
-*/wwwroot/lib/*
 deploy/*
 */.local-chromium/*
