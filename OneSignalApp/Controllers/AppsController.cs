@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using OneSignalApp.ActionFilters;
 using OneSignalApp.Models;
 using OneSignalApp.Services;
 using OneSignalApp.ViewModels;
@@ -16,17 +17,18 @@ namespace OneSignalApp.Controllers
   [Authorize]
   public class AppsController : BaseController
   {
-    // ReSharper disable once InconsistentNaming
-    private readonly IUserService userService;
+    private readonly IUserContext userContext;
 
-    public AppsController(IUserService userService)
+    public AppsController(IUserContext userContext)
     {
-      this.userService = userService;
+      this.userContext = userContext;
     }
 
     public async Task<IActionResult> Index()
     {
-      var loggedInUser = userService.GetLoggedInUser(HttpContext);
+      if (userContext.CurrentUser == null)
+        return NotFound();
+
       var apps = new List<App>();
 
       using (var httpClient = new HttpClient())
@@ -38,7 +40,7 @@ namespace OneSignalApp.Controllers
             return View(new AppsViewModel
             {
               Apps = apps,
-              LoggedInUser = loggedInUser
+              LoggedInUser = userContext.CurrentUser
             });
 
           var apiResponse = await response.Content.ReadAsStringAsync();
@@ -50,16 +52,18 @@ namespace OneSignalApp.Controllers
       return View(new AppsViewModel
       {
         Apps = apps,
-        LoggedInUser = loggedInUser
+        LoggedInUser = userContext.CurrentUser
       });
     }
 
+    [RequireAdmin]
     public IActionResult Create()
     {
       return View(new App());
     }
 
     [HttpPost]
+    [RequireAdmin]
     public async Task<IActionResult> Create(App app)
     {
       if (!ModelState.IsValid)
@@ -106,6 +110,7 @@ namespace OneSignalApp.Controllers
       return View(newApp);
     }
 
+    [RequireAdmin]
     public async Task<IActionResult> Edit(string id)
     {
       App appToEdit = null;
@@ -128,6 +133,7 @@ namespace OneSignalApp.Controllers
     }
 
     [HttpPost]
+    [RequireAdmin]
     public async Task<IActionResult> Edit(string id, App app)
     {
       if (!ModelState.IsValid)

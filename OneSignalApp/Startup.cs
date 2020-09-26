@@ -1,4 +1,5 @@
 using System;
+using Autofac;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -10,8 +11,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using OneSignalApp.DbContext;
 using OneSignalApp.Migrations;
-using OneSignalApp.Models;
-using OneSignalApp.Services;
 
 namespace OneSignalApp
 {
@@ -56,10 +55,11 @@ namespace OneSignalApp
           options.SlidingExpiration = true;
         })
         ;
+    }
 
-      services.AddTransient<ISecurityService, SecurityService>();
-      services.AddTransient<IUserRepository, SqlUserRepository>();
-      services.AddTransient<IUserService, UserService>();
+    public void ConfigureContainer(ContainerBuilder builder)
+    {
+      builder.RegisterModule(new AutofacModule());
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -71,7 +71,7 @@ namespace OneSignalApp
       }
       else
       {
-        app.UseExceptionHandler("/Home/Error");
+        app.UseExceptionHandler("/Error");
         // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
         app.UseHsts();
       }

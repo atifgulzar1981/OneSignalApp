@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
@@ -14,7 +15,8 @@ namespace OneSignalApp.Services
     {
       var claims = new List<Claim>
       {
-        new Claim(ClaimTypes.Email, user.Email, ClaimValueTypes.Email)
+        new Claim(ClaimTypes.Email, user.Email, ClaimValueTypes.Email),
+        new Claim("USERID", user.Id.ToString(), String.Empty),
       };
 
       var userIdentity = new ClaimsIdentity("OneSignalLogin");

@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OneSignalApp.Models;
+using OneSignalApp.Services;
 
 namespace OneSignalApp.Controllers
 {
