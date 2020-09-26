@@ -1,0 +1,7 @@
+﻿@using Microsoft.AspNetCore.Html
+@if (TempData[AppConstants.SUCCESS_MSG_KEY] != null) {
+  <div class="alert alert-success">@(new HtmlString(TempData[AppConstants.SUCCESS_MSG_KEY].ToString()))</div>
+}
+@if (TempData[AppConstants.ERROR_MSG_KEY] != null) {
+  <div class="alert alert-danger">@(new HtmlString(TempData[AppConstants.ERROR_MSG_KEY].ToString()))</div>
+}

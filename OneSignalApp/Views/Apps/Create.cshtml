@@ -4,4 +4,16 @@
   ViewData["Title"] = "Create One Signal App";
 }
 
-<h2>Create App</h2>
+
+<div class="row">
+  <div class="col-md-10">
+    <h1>Create App</h1>
+  </div>
+  <div class="col-md-2">
+    <a class="btn btn-link" asp-area="" asp-controller="Apps" asp-action="Index">Back To Apps</a>
+  </div>
+</div>
+
+<form asp-controller="Apps" asp-action="Create" method="post">
+  @Html.Partial("_Form")
+</form>
